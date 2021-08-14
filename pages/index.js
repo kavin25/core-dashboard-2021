@@ -127,6 +127,7 @@ export default function Home({ code }) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          overflowY: "auto",
         }}
         bgColor="--bg-color"
         textColor="--white"
