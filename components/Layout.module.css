@@ -1,0 +1,17 @@
+.container {
+  height: 100vh;
+  display: flex;
+  /*justify-content: space-evenly;*/
+  align-items: center;
+  width: 1320px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.main {
+  background-color: var(--dark-light);
+  padding: 12px;
+  border-radius: 12px;
+}

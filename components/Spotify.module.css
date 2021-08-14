@@ -1,0 +1,19 @@
+.spotify {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spotifyMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 12px;
+  width: 100%;
+  text-align: center;
+}
