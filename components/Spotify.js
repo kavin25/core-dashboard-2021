@@ -15,7 +15,7 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
     `?client_id=` +
     "c7c535316e97472b8b38c038fb0e8673" +
     `&response_type=code` +
-    `&redirect_uri=http://localhost:3000` +
+    `&redirect_uri=https://core-dashboard-2021.vercel.app` +
     `&scope=user-read-currently-playing user-read-playback-state user-modify-playback-state`;
 
   useEffect(() => {
