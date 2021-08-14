@@ -75,6 +75,7 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
             imageUrl={imageUrl}
             isPlaying={isPlaying}
             accessToken={accessToken}
+            toggleIsPlaying={() => setIsPlaying(!isPlaying)}
           />
         </ToastProvider>
       )}
@@ -82,7 +83,14 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
   );
 }
 
-const SpotifyWidget = ({ name, artist, imageUrl, isPlaying, accessToken }) => {
+const SpotifyWidget = ({
+  name,
+  artist,
+  imageUrl,
+  isPlaying,
+  accessToken,
+  toggleIsPlaying,
+}) => {
   const { addToast } = useToasts();
   const resumePlaying = () => {
     fetch("https://api.spotify.com/v1/me/player/play", {
@@ -99,6 +107,8 @@ const SpotifyWidget = ({ name, artist, imageUrl, isPlaying, accessToken }) => {
             { appearance: "error" }
           );
         }
+      } else {
+        toggleIsPlaying();
       }
     });
   };
@@ -118,6 +128,8 @@ const SpotifyWidget = ({ name, artist, imageUrl, isPlaying, accessToken }) => {
             { appearance: "error" }
           );
         }
+      } else {
+        toggleIsPlaying();
       }
     });
   };
