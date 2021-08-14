@@ -56,7 +56,9 @@ export default function Home({ code }) {
         `https://accounts.spotify.com/api/token` +
           `?grant_type=authorization_code` +
           `&code=${code}` +
-          `&redirect_uri=${encodeURI("http://localhost:3000")}` +
+          `&redirect_uri=${encodeURI(
+            "https://core-dashboard-2021.vercel.app"
+          )}` +
           `&client_id=${SPOTIFY_CLIENT_ID}` +
           `&client_secret=${SPOTIFY_CLIENT_SECRET}`,
         {
