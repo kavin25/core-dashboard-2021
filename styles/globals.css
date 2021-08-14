@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "SF Pro";
-  src: url("fonts/SF-Pro.ttf") format("ttf");
+  src: url("fonts/SF-Pro.ttf") format("truetype");
 }
 
 html,
