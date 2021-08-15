@@ -38,7 +38,9 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
             if (res.item) {
               console.log(res.item);
               const _name = res.item.name;
-              const _artist = res.item.artists[0].name;
+              const _artist = res.item.artists
+                .map((artist) => artist.name)
+                .join(", ");
               const _imageUrl = res.item.album.images[1].url;
               const _isPlaying = res.is_playing;
 
