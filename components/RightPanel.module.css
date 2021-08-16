@@ -1,0 +1,20 @@
+.panel {
+}
+
+.prog {
+  margin: 8px;
+}
+
+.ac {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px;
+}
+
+.vol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px;
+}

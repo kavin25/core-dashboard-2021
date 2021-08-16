@@ -1,0 +1,15 @@
+.phoneArea {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*.recents::--webkit-scrollbar {*/
+/*display: none;*/
+/*}*/
+
+/*.recents {*/
+/*-ms-overflow-style: none;*/
+/*scrollbar-width: none;*/
+/*}*/
