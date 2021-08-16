@@ -1,6 +1,12 @@
 import styles from "./Widget.module.css";
 
-export default function Widget({ children, style, bgColor, textColor }) {
+export default function Widget({
+  children,
+  style,
+  bgColor,
+  textColor,
+  className,
+}) {
   return (
     <div
       style={{
@@ -8,7 +14,7 @@ export default function Widget({ children, style, bgColor, textColor }) {
         color: `var(${textColor})`,
         ...style,
       }}
-      className={styles.widget}
+      className={`${styles.widget} ${className}`}
     >
       {children}
     </div>

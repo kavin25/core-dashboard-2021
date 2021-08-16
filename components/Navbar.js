@@ -17,10 +17,10 @@ export default function Navbar() {
       fa: "phone-alt",
       url: "/phone",
     },
-    {
-      fa: "pause",
-      url: "/spotify",
-    },
+    //{
+    //fa: "pause",
+    //url: "/spotify",
+    //},
   ];
   return (
     <nav className={styles.navbar}>

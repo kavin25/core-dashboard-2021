@@ -74,6 +74,11 @@ h2.heavy {
 
 h3 {
   font-size: 36px;
+  font-weight: 400;
+}
+
+h3.bold {
+  font-size: 30px;
   font-weight: 600;
 }
 
@@ -84,5 +89,14 @@ h3.heavy {
 
 h4 {
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 400;
+}
+
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #ff0000;
 }

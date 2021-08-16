@@ -5,26 +5,3 @@
   grid-template-rows: repeat(3, 1fr);
   height: 100%;
 }
-
-.numbers {
-  display: flex;
-  justify-content: space-between;
-}
-
-.prog {
-  margin: 8px;
-}
-
-.ac {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 24px;
-}
-
-.vol {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 24px;
-}

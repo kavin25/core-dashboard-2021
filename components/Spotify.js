@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastProvider, useToasts } from "react-toast-notifications";
 import Widget from "./Widget";
 
 import styles from "./Spotify.module.css";
+import { NotificationContext } from "../contexts/NotificationProvider";
 
 export default function Spotify({ accessToken, refreshAccessToken }) {
   const [name, setName] = useState("");
   const [artist, setArtist] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
+
   const authUrl = `https://accounts.spotify.com/authorize`;
   const authCompleteUrl =
     authUrl +
@@ -19,14 +21,13 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
     `&scope=user-read-currently-playing user-read-playback-state user-modify-playback-state`;
 
   useEffect(() => {
-    console.log(accessToken);
-    if (accessToken) {
+    const getCurrent = () => {
       fetch("https://api.spotify.com/v1/me/player/currently-playing", {
         headers: {
           Authorization: "Bearer " + accessToken,
         },
       })
-        .then((res) => {
+        .then(async (res) => {
           if (res.status === 401) {
             return refreshAccessToken();
           } else {
@@ -44,6 +45,10 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
               const _imageUrl = res.item.album.images[1].url;
               const _isPlaying = res.is_playing;
 
+              if (_isPlaying) {
+                setTimeout(getCurrent, res.item.duration_ms - res.progress_ms);
+              }
+
               setName(_name);
               setArtist(_artist);
               setImageUrl(_imageUrl);
@@ -57,7 +62,12 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
               setIsPlaying(res.is_playing);
             }
           }
-        });
+        })
+        .catch((err) => console.log(err.message));
+    };
+    console.log(accessToken);
+    if (accessToken) {
+      getCurrent();
     }
   }, [accessToken, refreshAccessToken]);
 
@@ -68,7 +78,25 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
       textColor="--white"
     >
       {accessToken === null ? (
-        <a href={authCompleteUrl}>Login with Spotify</a>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <a
+            style={{
+              backgroundColor: "var(--dark)",
+              padding: "16px 12px",
+              borderRadius: "8px",
+            }}
+            href={authCompleteUrl}
+          >
+            Login with Spotify
+          </a>
+        </div>
       ) : (
         <ToastProvider>
           <SpotifyWidget
@@ -94,6 +122,7 @@ const SpotifyWidget = ({
   toggleIsPlaying,
 }) => {
   const { addToast } = useToasts();
+  const { addNotification } = useContext(NotificationContext);
   const resumePlaying = () => {
     fetch("https://api.spotify.com/v1/me/player/play", {
       method: "PUT",
@@ -107,6 +136,9 @@ const SpotifyWidget = ({
           addToast(
             "You cannot use controls if you don't have Spotify Premium.",
             { appearance: "error" }
+          );
+          addNotification(
+            "You cannot use controls if you don't have Spotify Premium."
           );
         }
       } else {
@@ -128,6 +160,9 @@ const SpotifyWidget = ({
           addToast(
             "You cannot use controls if you don't have Spotify Premium.",
             { appearance: "error" }
+          );
+          addNotification(
+            "You cannot use controls if you don't have Spotify Premium."
           );
         }
       } else {
@@ -151,6 +186,8 @@ const SpotifyWidget = ({
             { appearance: "error" }
           );
         }
+      } else {
+        getCurrent();
       }
     });
   };
@@ -169,27 +206,45 @@ const SpotifyWidget = ({
             { appearance: "error" }
           );
         }
+      } else {
+        getCurrent();
       }
     });
   };
-  return (
+  return name ? (
     <div className={styles.spotify}>
       <div
         className={styles.spotifyMain}
         style={{ display: "flex", flexDirection: "column" }}
       >
         <h4>Play On Spotify</h4>
-        <h3>{name}</h3>
+        <h3 className="bold">{name}</h3>
         <p>{artist}</p>
 
         <div className={styles.controls}>
-          <i className="fas fa-backward fa-lg" onClick={prevPlaying}></i>
+          <i
+            style={{ cursor: "pointer" }}
+            className="fas fa-backward fa-lg"
+            onClick={prevPlaying}
+          ></i>
           {isPlaying ? (
-            <i className="fas fa-pause fa-lg" onClick={pausePlaying}></i>
+            <i
+              style={{ cursor: "pointer" }}
+              className="fas fa-pause fa-lg"
+              onClick={pausePlaying}
+            ></i>
           ) : (
-            <i className="fas fa-play fa-lg" onClick={resumePlaying}></i>
+            <i
+              style={{ cursor: "pointer" }}
+              className="fas fa-play fa-lg"
+              onClick={resumePlaying}
+            ></i>
           )}
-          <i className="fas fa-forward fa-lg" onClick={nextPlaying}></i>
+          <i
+            style={{ cursor: "pointer" }}
+            className="fas fa-forward fa-lg"
+            onClick={nextPlaying}
+          ></i>
         </div>
       </div>
       <img
@@ -201,6 +256,17 @@ const SpotifyWidget = ({
         width="180"
         alt=""
       />
+    </div>
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <p>Play something on your device to continue</p>
     </div>
   );
 };
