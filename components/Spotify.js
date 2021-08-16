@@ -20,51 +20,6 @@ export default function Spotify({ accessToken, refreshAccessToken }) {
     `&redirect_uri=https://core-dashboard-2021.vercel.app` +
     `&scope=user-read-currently-playing user-read-playback-state user-modify-playback-state`;
 
-  const getCurrentOutsideEffect = () => {
-    fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    })
-      .then(async (res) => {
-        if (res.status === 401) {
-          return refreshAccessToken();
-        } else {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        if (res) {
-          if (res.item) {
-            console.log(res.item);
-            const _name = res.item.name;
-            const _artist = res.item.artists
-              .map((artist) => artist.name)
-              .join(", ");
-            const _imageUrl = res.item.album.images[1].url;
-            const _isPlaying = res.is_playing;
-
-            if (_isPlaying) {
-              setTimeout(getCurrent, res.item.duration_ms - res.progress_ms);
-            }
-
-            setName(_name);
-            setArtist(_artist);
-            setImageUrl(_imageUrl);
-            setIsPlaying(_isPlaying);
-          } else if (res.currently_playing_type === "ad") {
-            setName("AD");
-            setArtist("Spotify");
-            setImageUrl(
-              "https://developer.spotify.com/assets/branding-guidelines/icon1@2x.png"
-            );
-            setIsPlaying(res.is_playing);
-          }
-        }
-      })
-      .catch((err) => console.log(err.message));
-  };
-
   useEffect(() => {
     const getCurrent = () => {
       fetch("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -168,6 +123,50 @@ const SpotifyWidget = ({
 }) => {
   const { addToast } = useToasts();
   const { addNotification } = useContext(NotificationContext);
+  const getCurrentOutsideEffect = () => {
+    fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    })
+      .then(async (res) => {
+        if (res.status === 401) {
+          return refreshAccessToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((res) => {
+        if (res) {
+          if (res.item) {
+            console.log(res.item);
+            const _name = res.item.name;
+            const _artist = res.item.artists
+              .map((artist) => artist.name)
+              .join(", ");
+            const _imageUrl = res.item.album.images[1].url;
+            const _isPlaying = res.is_playing;
+
+            if (_isPlaying) {
+              setTimeout(getCurrent, res.item.duration_ms - res.progress_ms);
+            }
+
+            setName(_name);
+            setArtist(_artist);
+            setImageUrl(_imageUrl);
+            setIsPlaying(_isPlaying);
+          } else if (res.currently_playing_type === "ad") {
+            setName("AD");
+            setArtist("Spotify");
+            setImageUrl(
+              "https://developer.spotify.com/assets/branding-guidelines/icon1@2x.png"
+            );
+            setIsPlaying(res.is_playing);
+          }
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
   const resumePlaying = () => {
     fetch("https://api.spotify.com/v1/me/player/play", {
       method: "PUT",
